@@ -15,6 +15,7 @@ public class KDFTest {
     @BeforeSuite
     public void setupReport() {
         ReportManager.init();
+        ExecutionEngine.init(); // Pre-load all keywords before tests start
     }
 
     @AfterSuite
