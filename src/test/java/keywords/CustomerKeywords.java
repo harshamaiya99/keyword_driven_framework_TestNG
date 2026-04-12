@@ -1,14 +1,14 @@
 package keywords;
 
+import annotations.Keyword;
 import model.TestRow;
 import utils.ReportManager;
 
 public class CustomerKeywords {
 
+    @Keyword("CUSTPOST")
     public static void createCustomer(TestRow row) {
-
         String cust = row.data.get("Customer Number");
-
         ReportManager.info("Creating Customer: " + cust);
 
         // simulate failure
@@ -17,10 +17,9 @@ public class CustomerKeywords {
         }
     }
 
+    @Keyword("CUSTUPDT")
     public static void updateCustomer(TestRow row) {
-
         String cust = row.data.get("Customer Number");
-
         ReportManager.info("Updating Customer: " + cust);
     }
 }
