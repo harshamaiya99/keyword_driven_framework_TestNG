@@ -4,6 +4,8 @@ import annotations.Keyword;
 import model.TestRow;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -14,6 +16,7 @@ public class ExecutionEngine {
 
     // Cache to store the mapping of Action Name -> Method (e.g., "CUSTPOST" -> createCustomer)
     private static final Map<String, Method> KEYWORD_CACHE = new HashMap<>();
+    private static final Logger log = LoggerFactory.getLogger(ExecutionEngine.class);
 
     // Static block runs exactly once when the ExecutionEngine is first loaded into memory
     static {
@@ -43,6 +46,7 @@ public class ExecutionEngine {
             // Invoke the static method dynamically and pass the TestRow
             targetMethod.invoke(null, row);
         } else {
+            log.error("Execution aborted: Unknown action or missing @Keyword annotation for '{}'", row.action);
             throw new RuntimeException("Unknown action or missing @Keyword annotation for: " + row.action);
         }
     }
