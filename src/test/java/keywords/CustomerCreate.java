@@ -4,7 +4,7 @@ import annotations.Keyword;
 import model.TestRow;
 import utils.ReportManager;
 
-public class CustomerKeywords {
+public class CustomerCreate {
 
     @Keyword("CUSTPOST")
     public static void createCustomer(TestRow row) {
@@ -15,11 +15,5 @@ public class CustomerKeywords {
         if ("1200002".equals(cust)) {
             throw new RuntimeException("Customer creation failed");
         }
-    }
-
-    @Keyword("CUSTUPDT")
-    public static void updateCustomer(TestRow row) {
-        String cust = row.data.get("Customer Number");
-        ReportManager.info("Updating Customer: " + cust);
     }
 }

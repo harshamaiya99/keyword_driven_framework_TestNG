@@ -4,7 +4,7 @@ import annotations.Keyword;
 import model.TestRow;
 import utils.ReportManager;
 
-public class AccountKeywords {
+public class AccountCreate {
 
     @Keyword("ACCTPOST")
     public static void createAccount(TestRow row) {
