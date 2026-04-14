@@ -36,8 +36,8 @@ public class KDFTest {
     @Test(dataProvider = "excelData")
     public void runRow(TestRow row) throws Exception {
 
-        // 🔵 Create report entry
-        ReportManager.createTest("TD: " + row.tdId + " | " + row.action);
+        // 🔵 Create hierarchical report entry
+        ReportManager.createTestHierarchy(row.scenarioName, row.testCaseName, row.tdId, row.action);
 
         ReportManager.info("Starting execution");
 
