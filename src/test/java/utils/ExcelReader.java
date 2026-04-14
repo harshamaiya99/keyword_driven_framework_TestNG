@@ -15,10 +15,11 @@ public class ExcelReader {
         Workbook workbook = WorkbookFactory.create(fis);
         Sheet sheet = workbook.getSheetAt(0);
 
-        Map<Integer, String> headers = new HashMap<>();
-
-        String currentType = "";
         String[] headerNames = null;
+
+        // Track the hierarchy state as we read down the spreadsheet
+        String currentScenario = "Default Scenario";
+        String currentTestCase = "Default Test Case";
 
         for (Row row : sheet) {
 
@@ -27,16 +28,29 @@ public class ExcelReader {
 
             String type = typeCell.toString().trim();
 
+            // Update hierarchy trackers
+            if (type.equalsIgnoreCase("TestScenario")) {
+                currentScenario = row.getCell(1).toString().trim();
+                continue;
+            }
+            if (type.equalsIgnoreCase("TestCase")) {
+                currentTestCase = row.getCell(1).toString().trim();
+                continue;
+            }
+
             if (type.equalsIgnoreCase("Keyword")) {
                 headerNames = new String[row.getLastCellNum()];
                 for (int i = 1; i < row.getLastCellNum(); i++) {
                     headerNames[i] = row.getCell(i).toString().trim();
                 }
+                continue;
             }
 
             if (type.equalsIgnoreCase("TestData")) {
 
                 TestRow tr = new TestRow();
+                tr.scenarioName = currentScenario; // Assign parent scenario
+                tr.testCaseName = currentTestCase; // Assign parent test case
                 tr.data = new HashMap<>();
 
                 for (int i = 1; i < row.getLastCellNum(); i++) {
