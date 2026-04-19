@@ -36,19 +36,24 @@ public class KDFTest {
     @Test(dataProvider = "excelData")
     public void runRow(TestRow row) throws Exception {
 
-        // 🔵 Create hierarchical report entry
         ReportManager.createTestHierarchy(row.scenarioName, row.testCaseName, row.tdId, row.action);
-
         ReportManager.info("Starting execution");
 
-        // Dependency check
-        if (row.dependsOn != null && !row.dependsOn.isEmpty()) {
+        // 🔵 UPDATED: Multiple Dependency check
+        if (row.dependsOn != null && !row.dependsOn.trim().isEmpty()) {
 
-            String status = ExecutionContext.getStatus(row.dependsOn);
+            // Split by comma in case there are multiple dependencies
+            String[] dependencies = row.dependsOn.split(",");
 
-            if (!"PASS".equals(status)) {
-                ReportManager.skip("Skipped due to dependency: " + row.dependsOn);
-                throw new SkipException("Skipping due to dependency: " + row.dependsOn);
+            for (String dep : dependencies) {
+                dep = dep.trim(); // Remove any accidental spaces from Excel
+                String status = ExecutionContext.getStatus(dep);
+
+                // If ANY dependency is not PASS, skip this test
+                if (!"PASS".equals(status)) {
+                    ReportManager.skip("Skipped due to failing dependency: " + dep);
+                    throw new SkipException("Skipping due to failing dependency: " + dep);
+                }
             }
         }
 
