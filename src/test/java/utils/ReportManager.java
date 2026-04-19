@@ -20,7 +20,8 @@ public class ReportManager {
     private static ThreadLocal<ExtentTest> stepTest = new ThreadLocal<>();
 
     public static void init() {
-        ExtentSparkReporter reporter = new ExtentSparkReporter("reports/extent.html");
+        // Fetch path from config.properties
+        ExtentSparkReporter reporter = new ExtentSparkReporter(ConfigReader.get("report.path"));
         reporter.config().setReportName("KDF Automation Report");
         reporter.config().setDocumentTitle("Execution Report");
 
