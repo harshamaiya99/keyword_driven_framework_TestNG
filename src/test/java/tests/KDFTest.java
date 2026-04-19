@@ -5,6 +5,7 @@ import engine.ExecutionEngine;
 import model.TestRow;
 import org.testng.SkipException;
 import org.testng.annotations.*;
+import utils.ConfigReader;
 import utils.ExcelReader;
 import utils.ReportManager;
 
@@ -25,8 +26,8 @@ public class KDFTest {
 
     @DataProvider(name = "excelData")
     public Object[][] getData() throws Exception {
-
-        List<TestRow> list = ExcelReader.readExcel("src/test/resources/testdata.xlsx");
+        // Fetch path from config.properties
+        List<TestRow> list = ExcelReader.readExcel(ConfigReader.get("testdata.path"));
 
         return list.stream()
                 .map(r -> new Object[]{r})
